@@ -31,6 +31,10 @@ public class MainActivity extends Activity {
 	public boolean onTouchEvent(MotionEvent event) {
     	if (event.getAction() == MotionEvent.ACTION_MOVE) {  
     		mView.move((int)event.getX(), (int)event.getY());
+    	} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+    		mView.setLastXY((int)event.getX(), (int)event.getY());
+    	} else if (event.getAction() == MotionEvent.ACTION_UP) {
+    		mView.setLastXY(0, 0);
     	}
     	return super.onTouchEvent(event); 
     }
