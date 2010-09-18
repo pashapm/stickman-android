@@ -9,10 +9,12 @@ public class Stickman {
 	
 	protected static int OBJ_ID = 0;
 	
-	private static int ST_LEN_VERY_SHORT = 20;
-	private static int ST_LEN_SHORT = 37;
-	private static int ST_LEN_AVER = (int) (ST_LEN_SHORT * 1.5);
-	private static int ST_LEN_LONG = (int) (ST_LEN_AVER * 1.5);
+	private static float KOEFF = 1.1f;
+	
+	private static int ST_LEN_VERY_SHORT = (int) (20 * KOEFF);
+	private static int ST_LEN_SHORT = (int) (37 * KOEFF);
+	private static int ST_LEN_AVER = (int) (ST_LEN_SHORT * 1.5 * KOEFF);
+	private static int ST_LEN_LONG = (int) (ST_LEN_AVER * 1.5 * KOEFF);
 	
 	
 	
@@ -65,25 +67,21 @@ public class Stickman {
 	
 	private HashSet<Point> mPoints = new HashSet<Point>();
 	private ArrayList<Edge> mEdges = new ArrayList<Edge>();
-	private Point mHeadPoint;
+	private Point mHeadPoint = new Point(ScreenProps.screenWidth/2, 200);;
+	
+	Point cent = new Point(mHeadPoint.x, mHeadPoint.y);
+	Point head = new Point();
+	Point lhand = new Point();
+	Point rhand = new Point(); 
+	Point pah = new Point();
+	Point lleg = new Point();
+	Point rleg = new Point();
+	Point lbothand = new Point();
+	Point rbothand = new Point();
+	Point lbotleg = new Point();
+	Point rbotleg = new Point();
 	
 	public Stickman() {
-		mHeadPoint = new Point(ScreenProps.screenWidth/2, 200);
-		
-		Point head = new Point(mHeadPoint.x, mHeadPoint.y - ST_LEN_VERY_SHORT);
-		Point cent = new Point(mHeadPoint.x, mHeadPoint.y);
-		Point lhand = new Point(mHeadPoint.x - ST_LEN_SHORT, mHeadPoint.y);
-		Point rhand = new Point(mHeadPoint.x+ST_LEN_SHORT, mHeadPoint.y);
-		Point pah = new Point(mHeadPoint.x, mHeadPoint.y+ST_LEN_AVER);
-		
-		Point lleg = new Point();
-		Point rleg = new Point();
-		
-		Point lbothand = new Point();
-		Point rbothand = new Point();
-		
-		Point lbotleg = new Point();
-		Point rbotleg = new Point();
 		
 		mPoints.add(head);
 		mPoints.add(cent);
@@ -120,9 +118,13 @@ public class Stickman {
 		lbotleg.mBasePoint = lleg;
 		rbotleg.mBasePoint = rleg;
 		
-		
 		setBig(head);
 		
+		setAngle(lhand, Math.PI);
+		setAngle(rhand, 0);
+		setAngle(pah, Math.PI/2);
+		
+		setAngle(head, -Math.PI/2);
 		setAngle(lleg, Math.PI/4);
 		setAngle(rleg, Math.PI*3/4);
 		setAngle(lbothand, Math.PI*1/4);
@@ -179,6 +181,18 @@ public class Stickman {
 		}
 		double alpha = getAngle(p.mBasePoint.x, p.mBasePoint.y, x, y);
 		setAngle(p, alpha);
+	}
+	
+	public void move(Point p, int x, int y, int dx, int dy) {
+		if (p == cent) {
+//			Log.d("!!!", dx + " "+dy);
+//			for (Point po : getPoints()) {
+//				po.x += dx;
+//				po.y += dy;
+//			}
+		} else {
+			setAngle(p, x, y);
+		}
 	}
 	
 	private Edge findEdge(Point p1, Point p2) {

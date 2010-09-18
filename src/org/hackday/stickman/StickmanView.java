@@ -63,12 +63,16 @@ public class StickmanView extends View {
 		return near;
  	}
 	
+	private int lastX;
+	private int lastY;
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			Point sel = findNearestPoint((int)event.getX(), (int)event.getY()); 
 			mStickman.selectPoint(sel);
 			mCaptured = sel;
+			
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -80,8 +84,14 @@ public class StickmanView extends View {
 	}
 	
 	public void move(int x, int y) {
-		mStickman.setAngle(mCaptured, x, y);
+		int dx = x - lastX;
+		int dy = y - lastY;
+		mStickman.move(mCaptured, x, y, dx, dy);
 		invalidate();
 	}
 
+	public void setLastXY(int x, int y) {
+		lastX = x;
+		lastY = y;
+	}
 }
