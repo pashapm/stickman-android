@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_height="fill_parent"
+              android:layout_width="fill_parent"
+              android:orientation="vertical">
+
+    <LinearLayout android:layout_height="wrap_content"
+                  android:layout_width="fill_parent">
+        <Button android:id="@+id/add"
+                android:text="add"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+        <Button android:id="@+id/remove"
+                android:text="remove"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+    </LinearLayout>
+
+    <org.hackday.stickman.StickmanView android:id="@+id/stickman_view"
+                                       android:layout_height="0dp"
+                                       android:layout_width="fill_parent"/>
+    <Gallery android:id="@+id/gallery"
+             android:layout_height="fill_parent"
+             android:layout_width="fill_parent"
+             android:background="@android:color/white"/>
+</LinearLayout>
