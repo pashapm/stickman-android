@@ -40,7 +40,8 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         int id = view.getId();
         switch (id) {
             case R.id.add:
-                adapter.scenes.add(adapter.scenes.get(gallery.getSelectedItemPosition()));
+            	
+                adapter.add(adapter.scenes.get(gallery.getSelectedItemPosition()));
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.remove:
@@ -56,8 +57,10 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
     }
 
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//        Stickman s = adapter.scenes.get(i);
-//        stickmanView.setmStickman(s);
+        Stickman s = adapter.scenes.get(i);
+        stickmanView.setmStickman(s);
+        stickmanView.invalidate();
+        adapter.notifyDataSetChanged();
     }
 
     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -81,28 +84,11 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         return true;
     }
 
-//    @Override
-//	public boolean onTouchEvent(MotionEvent motionEvent) {
-//        switch (motionEvent.getAction()) {
-//            case MotionEvent.ACTION_MOVE:
-//                stickmanView.move((int) motionEvent.getX(), (int) motionEvent.getY());
-//                break;
-//            case MotionEvent.ACTION_DOWN:
-//                stickmanView.setLastXY((int) motionEvent.getX(), (int) motionEvent.getY());
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                stickmanView.setLastXY(0, 0);
-//                break;
-//
-//        }
-//        return true;
-//    }
-
     private class SceneAdapter extends BaseAdapter {
         private LinkedList<Stickman> scenes = new LinkedList<Stickman>();
 
         public void add(Stickman stickman) {
-        	Stickman newstick = new  Stickman();
+        	Stickman newstick = new Stickman();
         	newstick.set(stickman);
             scenes.add(newstick);
         }
@@ -126,10 +112,10 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         public View getView(int i, View view, ViewGroup viewGroup) {
             Gallery.LayoutParams lp = new Gallery.LayoutParams(75, 100);
             StickmanView stickmanView = new StickmanView(SceneList.this);
-            stickmanView.setFocusable(false);
+            stickmanView.setClickable(false);
             stickmanView.setLayoutParams(lp);
             stickmanView.setmStickman(scenes.get(i)); 
-            return stickmanView;
+            return stickmanView; 
         }
     }
 }
