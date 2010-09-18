@@ -21,9 +21,11 @@
 
     <org.hackday.stickman.StickmanView android:id="@+id/stickman_view"
                                        android:layout_height="0dp"
-                                       android:layout_width="fill_parent"/>
+                                       android:layout_width="fill_parent"
+                                       android:layout_weight="1"/>
     <Gallery android:id="@+id/gallery"
-             android:layout_height="fill_parent"
+             android:layout_height="100px"
              android:layout_width="fill_parent"
-             android:background="@android:color/white"/>
+             android:spacing="1dp"
+             android:background="#f00"/>
 </LinearLayout>

@@ -16,15 +16,17 @@ public class StickmanView extends View {
 
 	private Stickman mStickman = new Stickman();
 	private Paint mPaint = new Paint();
-	
+
 	private Point mCaptured = null;
-	
+
 	public StickmanView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+        init();
 	}
-	
+
 	public StickmanView(Context context) {
 		super(context);
+        init();
 	}
 
 	public void setStickman(Stickman s) {
@@ -32,25 +34,41 @@ public class StickmanView extends View {
 		ss.set(mStickman);
 		mStickman = ss;
 	}
-	
+
+
+    private void init() {
+        setMinimumHeight(100);
+        setMinimumWidth(75);
+    }
+
 	@Override
 	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		
-		canvas.drawColor(Color.WHITE);
+        super.onDraw(canvas);
+        int height = getMeasuredHeight();
+        int width = getMeasuredWidth();
+//        System.out.println("width = " + width);
+//        System.out.println("height = " + height);
+        if (height > 0) {
+            float scaleFactor = 1.0f * height / ScreenProps.screenHeight;
+//            System.out.println("scaleFactor = " + scaleFactor);
+            canvas.scale(scaleFactor, scaleFactor);
+        }
+
+
+        canvas.drawColor(Color.WHITE);
 		mPaint.setAntiAlias(true);
-		
+
 		for (Edge edge : mStickman.getEdges()) {
 			canvas.drawLine(edge.mStart.x, edge.mStart.y, edge.mEnd.x, edge.mEnd.y, mPaint);
 		}
-		
+
 		for (Point p : mStickman.getPoints().values()) {
 			mPaint.setColor(p.mSelected ? Color.RED : Color.BLACK);
 			canvas.drawCircle(p.x, p.y, p.mBig ? 10 : 5, mPaint);
 		}
 		mPaint.setColor(Color.BLACK);
 	}
-	
+
 	private Point findNearestPoint(int x, int y) {
 		Point near = null;
 		for (Point p : mStickman.getPoints().values()) {
@@ -64,27 +82,28 @@ public class StickmanView extends View {
 		}
 		return near;
  	}
-	
+
 	private int lastX;
 	private int lastY;
-	
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			Point sel = findNearestPoint((int)event.getX(), (int)event.getY()); 
+			Point sel = findNearestPoint((int)event.getX(), (int)event.getY());
+            System.out.println("sel = " + sel);
 			mStickman.selectPoint(sel);
 			mCaptured = sel;
-			
+
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			
+
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			mCaptured = null;
 		}
-		
+
 		invalidate();
 		return super.onTouchEvent(event);
 	}
-	
+
 	public void move(int x, int y) {
 		int dx = x - lastX;
 		int dy = y - lastY;
@@ -96,4 +115,8 @@ public class StickmanView extends View {
 		lastX = x;
 		lastY = y;
 	}
+
+    public void setmStickman(Stickman mStickman) {
+        this.mStickman = mStickman;
+    }
 }
