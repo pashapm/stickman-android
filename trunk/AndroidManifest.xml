@@ -3,11 +3,14 @@
           package="org.hackday.stickman">
     <application android:icon="@drawable/icon" android:label="Stickman" android:debuggable="true">
         <activity android:name=".MainActivity">
+        </activity>
+        <activity android:name=".LandscapeEditActivity"/>
+        <activity android:name=".SceneList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
-        <activity android:name=".LandscapeEditActivity"/>
     </application>
 </manifest>
