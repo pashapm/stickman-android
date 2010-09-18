@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Gallery;
+
 import org.hackday.stickman.Stickman.Edge;
 import org.hackday.stickman.Stickman.Point;
 
@@ -84,6 +86,9 @@ public class StickmanView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+    	if (getParent() instanceof Gallery) {
+    		return false;
+    	}
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Point sel = findNearestPoint((int) event.getX(), (int) event.getY());
