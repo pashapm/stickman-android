@@ -28,7 +28,9 @@ public class StickmanView extends View {
 	}
 
 	public void setStickman(Stickman s) {
-		mStickman = s;
+		Stickman ss = new Stickman();
+		ss.set(mStickman);
+		mStickman = ss;
 	}
 	
 	@Override
@@ -42,7 +44,7 @@ public class StickmanView extends View {
 			canvas.drawLine(edge.mStart.x, edge.mStart.y, edge.mEnd.x, edge.mEnd.y, mPaint);
 		}
 		
-		for (Point p : mStickman.getPoints()) {
+		for (Point p : mStickman.getPoints().values()) {
 			mPaint.setColor(p.mSelected ? Color.RED : Color.BLACK);
 			canvas.drawCircle(p.x, p.y, p.mBig ? 10 : 5, mPaint);
 		}
@@ -51,7 +53,7 @@ public class StickmanView extends View {
 	
 	private Point findNearestPoint(int x, int y) {
 		Point near = null;
-		for (Point p : mStickman.getPoints()) {
+		for (Point p : mStickman.getPoints().values()) {
 			if (near == null) {
 				near = p;
 			} else {
