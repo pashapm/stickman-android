@@ -54,7 +54,7 @@ public class StickmanView extends View {
 
         for (Point p : mStickman.getPoints().values()) {
             mPaint.setColor(p.mSelected ? Color.RED : Color.BLACK);
-            canvas.drawCircle(p.x, p.y, p.mBig ? 10 : 5, mPaint);
+            canvas.drawCircle(p.x, p.y, p.mBig ? Stickman.RESCALE_MULT / 30 : Stickman.RESCALE_MULT / 60, mPaint);
         }
         mPaint.setColor(Color.BLACK);
     }

@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 public class Stickman implements Cloneable {
 
-    private static final int RESCALE_MULT = 1000;
+    public static final int RESCALE_MULT = 1000;
     public static final int RELATIVE_WIDTH = (int) (0.75f* RESCALE_MULT);
     public static final int RELATIVE_HEIGHT = (int) (1.0f* RESCALE_MULT);
 

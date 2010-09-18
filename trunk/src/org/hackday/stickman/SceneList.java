@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.LinkedList;
 
-public class SceneList extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener, View.OnTouchListener {
+public class SceneList extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private SceneAdapter adapter;
     private Gallery gallery;
     private StickmanView stickmanView;
@@ -30,7 +30,6 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         gallery.setOnItemSelectedListener(this);
 
         stickmanView = (StickmanView) findViewById(R.id.stickman_view);
-        stickmanView.setOnTouchListener(this);
 
         findViewById(R.id.add).setOnClickListener(this);
         findViewById(R.id.remove).setOnClickListener(this);
@@ -41,7 +40,7 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         int id = view.getId();
         switch (id) {
             case R.id.add:
-                adapter.scenes.add(new Stickman());
+                adapter.scenes.add(adapter.scenes.get(gallery.getSelectedItemPosition()));
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.remove:
@@ -103,7 +102,9 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         private LinkedList<Stickman> scenes = new LinkedList<Stickman>();
 
         public void add(Stickman stickman) {
-            scenes.add(stickman);
+        	Stickman newstick = new  Stickman();
+        	newstick.set(stickman);
+            scenes.add(newstick);
         }
 
         public void add(int index, Stickman stickman) {
@@ -121,12 +122,13 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         public long getItemId(int i) {
             return 0;
         }
-
+  
         public View getView(int i, View view, ViewGroup viewGroup) {
             Gallery.LayoutParams lp = new Gallery.LayoutParams(75, 100);
             StickmanView stickmanView = new StickmanView(SceneList.this);
+            stickmanView.setFocusable(false);
             stickmanView.setLayoutParams(lp);
-            stickmanView.setmStickman(scenes.get(i));
+            stickmanView.setmStickman(scenes.get(i)); 
             return stickmanView;
         }
     }
