@@ -3,6 +3,7 @@ package org.hackday.stickman;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,6 +13,8 @@ import android.os.Bundle;
  * To change this template use File | Settings | File Templates.
  */
 public class MainActivity extends Activity {
+	private StickmanView mView;
+	
     /**
      * Called when the activity is first created.
      */
@@ -20,6 +23,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         ScreenProps.initialize(this);
 //        startActivity(new Intent(this, LandscapeEditActivity.class));
-        setContentView(new StickmanView(this));
+        mView = new StickmanView(this);
+        setContentView(mView);
+    }
+    
+    @Override
+	public boolean onTouchEvent(MotionEvent event) {
+    	if (event.getAction() == MotionEvent.ACTION_MOVE) {  
+    		mView.move((int)event.getX(), (int)event.getY());
+    	}
+    	return super.onTouchEvent(event); 
     }
 }
