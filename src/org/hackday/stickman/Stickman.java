@@ -7,17 +7,24 @@ import android.util.Log;
 
 public class Stickman {
 	
-	private static int ST_LEN = 100;
-	private static int ST_LEN_SHORT = ST_LEN / 3;
+	protected static int OBJ_ID = 0;
+	
+	private static int ST_LEN_VERY_SHORT = 20;
+	private static int ST_LEN_SHORT = 37;
+	private static int ST_LEN_AVER = (int) (ST_LEN_SHORT * 1.5);
+	private static int ST_LEN_LONG = (int) (ST_LEN_AVER * 1.5);
+	
+	
 	
 	class Edge {
 		public Point mStart;
 		public Point mEnd;
+		public int length;
 		
-		public Edge(Point start, Point end) {
+		public Edge(Point start, Point end, int length) {
 			mStart = start;
 			mEnd = end;
-			Log.d("!!! Edge", ""+getLength());
+			this.length = length;
 		}
 		
 		public double getLength() {
@@ -31,15 +38,29 @@ public class Stickman {
 			super(x, y);
 		}
 		
+		Point() {
+		}
+		
 		@Override
 		public String toString() {
 			return "Point["+x+","+y+"]";
 		}
 		
+		protected int id = OBJ_ID++;
 		public boolean mSelected = false;
 		public boolean mBig = false;
 		protected Point mBasePoint;
 		protected HashSet<Point> mDerivedPoints = new HashSet<Point>();
+		
+		@Override
+		public int hashCode() {
+			return id; 
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			return (o.getClass() == Point.class && id == ((Point)o).id); 
+		}
 	} 
 	
 	private HashSet<Point> mPoints = new HashSet<Point>();
@@ -49,34 +70,44 @@ public class Stickman {
 	public Stickman() {
 		mHeadPoint = new Point(ScreenProps.screenWidth/2, 200);
 		
-		Point head = new Point(mHeadPoint.x, mHeadPoint.y-ST_LEN/3);
+		Point head = new Point(mHeadPoint.x, mHeadPoint.y - ST_LEN_VERY_SHORT);
 		Point cent = new Point(mHeadPoint.x, mHeadPoint.y);
-		Point lhand = new Point(mHeadPoint.x-ST_LEN, mHeadPoint.y);
-		Point rhand = new Point(mHeadPoint.x+ST_LEN, mHeadPoint.y);
-		Point pah = new Point(mHeadPoint.x, mHeadPoint.y+ST_LEN);
+		Point lhand = new Point(mHeadPoint.x - ST_LEN_SHORT, mHeadPoint.y);
+		Point rhand = new Point(mHeadPoint.x+ST_LEN_SHORT, mHeadPoint.y);
+		Point pah = new Point(mHeadPoint.x, mHeadPoint.y+ST_LEN_AVER);
 		
-		double alpha = Math.PI/4;
-		int b = (int) (ST_LEN /  Math.sqrt(1 + Math.sin(alpha)*Math.sin(alpha)));
-		int a = (int) (b * Math.sin(alpha));
+		Point lleg = new Point();
+		Point rleg = new Point();
 		
-		Point lleg = new Point(pah.x+a, pah.y+b);
-		Point rleg = new Point(pah.x-a, pah.y+b);
+		Point lbothand = new Point();
+		Point rbothand = new Point();
+		
+		Point lbotleg = new Point();
+		Point rbotleg = new Point();
 		
 		mPoints.add(head);
 		mPoints.add(cent);
 		mPoints.add(lhand);
 		mPoints.add(rhand);
+		mPoints.add(lbothand);
+		mPoints.add(rbothand);
 		mPoints.add(pah);
 		mPoints.add(lleg);
 		mPoints.add(rleg);
+		mPoints.add(lbotleg);
+		mPoints.add(rbotleg);
 		
 		//edges 
-		mEdges.add(new Edge(head, cent));
-		mEdges.add(new Edge(cent, lhand));
-		mEdges.add(new Edge(cent, rhand));
-		mEdges.add(new Edge(cent, pah));
-		mEdges.add(new Edge(pah, lleg));
-		mEdges.add(new Edge(pah, rleg));
+		mEdges.add(new Edge(head, cent, ST_LEN_VERY_SHORT));
+		mEdges.add(new Edge(cent, lhand, ST_LEN_SHORT));
+		mEdges.add(new Edge(cent, rhand, ST_LEN_SHORT));
+		mEdges.add(new Edge(lhand, lbothand, ST_LEN_SHORT));
+		mEdges.add(new Edge(rhand, rbothand, ST_LEN_SHORT));
+		mEdges.add(new Edge(cent, pah, ST_LEN_AVER));
+		mEdges.add(new Edge(pah, lleg, ST_LEN_AVER));
+		mEdges.add(new Edge(pah, rleg, ST_LEN_AVER));
+		mEdges.add(new Edge(lleg, lbotleg, ST_LEN_AVER));
+		mEdges.add(new Edge(rleg, rbotleg, ST_LEN_AVER));
 		
 		rleg.mBasePoint = pah;
 		lleg.mBasePoint = pah;
@@ -84,8 +115,20 @@ public class Stickman {
 		lhand.mBasePoint = cent;
 		rhand.mBasePoint = cent;
 		head.mBasePoint = cent;
+		lbothand.mBasePoint = lhand;
+		rbothand.mBasePoint = rhand;
+		lbotleg.mBasePoint = lleg;
+		rbotleg.mBasePoint = rleg;
+		
 		
 		setBig(head);
+		
+		setAngle(lleg, Math.PI/4);
+		setAngle(rleg, Math.PI*3/4);
+		setAngle(lbothand, Math.PI*1/4);
+		setAngle(rbothand, Math.PI*3/4);
+		setAngle(lbotleg, Math.PI*1/4);
+		setAngle(rbotleg, Math.PI*3/4);
 	}
 	
 	public ArrayList<Edge> getEdges() {
@@ -135,7 +178,25 @@ public class Stickman {
 			return;
 		}
 		double alpha = getAngle(p.mBasePoint.x, p.mBasePoint.y, x, y);
-		int len = p.mBig ? ST_LEN_SHORT : ST_LEN;
+		setAngle(p, alpha);
+	}
+	
+	private Edge findEdge(Point p1, Point p2) {
+		for (Edge ed : getEdges()) {
+			if ((ed.mEnd == p1 && ed.mStart == p2) 
+					|| (ed.mEnd == p2 && ed.mStart == p1)) {
+				return ed;
+			}
+		}
+		return null;
+	}
+	
+	public void setAngle(Point p, double alpha) { 
+		Edge ed = findEdge(p, p.mBasePoint);
+		if (ed == null) {
+			return;
+		}
+		int len = ed.length;
 		int a = (int) (Math.sin(alpha) * len);
 		int b = (int) (Math.cos(alpha) * len);
 		p.set(p.mBasePoint.x + b, p.mBasePoint.y + a);

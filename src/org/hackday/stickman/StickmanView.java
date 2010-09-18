@@ -27,6 +27,10 @@ public class StickmanView extends View {
 		super(context);
 	}
 
+	public void setStickman(Stickman s) {
+		mStickman = s;
+	}
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
