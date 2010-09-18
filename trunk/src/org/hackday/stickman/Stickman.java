@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import android.graphics.Point;
+import android.util.Log;
 
 public class Stickman {
 	
@@ -16,6 +17,11 @@ public class Stickman {
 		public Edge(Point start, Point end) {
 			mStart = start;
 			mEnd = end;
+			Log.d("!!! Edge", ""+getLength());
+		}
+		
+		public double getLength() {
+			return Math.hypot(mStart.x - mEnd.x, mStart.y - mEnd.y);
 		}
 	}
 	
@@ -32,7 +38,7 @@ public class Stickman {
 		Point pah = new Point(mHeadPoint.x, mHeadPoint.y+ST_LEN);
 		
 		double alpha = Math.PI/4;
-		int b = (int) (ST_LEN /  (1 + Math.sin(alpha)*Math.sin(alpha)));
+		int b = (int) (ST_LEN /  Math.sqrt(1 + Math.sin(alpha)*Math.sin(alpha)));
 		int a = (int) (b * Math.sin(alpha));
 		
 		Point lleg = new Point(pah.x+a, pah.y+b);
@@ -60,6 +66,10 @@ public class Stickman {
 	
 	public ArrayList<Point> getPoints() {
 		return mPoints;
+	}
+	
+	public Point getHead() {
+		return mHeadPoint;
 	}
 	
 }

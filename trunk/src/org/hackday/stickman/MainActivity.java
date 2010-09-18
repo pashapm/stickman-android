@@ -18,7 +18,8 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivity(new Intent(this, LandscapeEditActivity.class));
-        setContentView(R.layout.main);
+        ScreenProps.initialize(this);
+//        startActivity(new Intent(this, LandscapeEditActivity.class));
+        setContentView(new StickmanView(this));
     }
 }
