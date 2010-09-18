@@ -1,11 +1,13 @@
 package org.hackday.stickman;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import android.util.Log;
 
-public class Stickman {
+public class Stickman implements Cloneable {
 	
 	protected static int OBJ_ID = 0;
 	
@@ -15,7 +17,6 @@ public class Stickman {
 	private static int ST_LEN_SHORT = (int) (37 * KOEFF);
 	private static int ST_LEN_AVER = (int) (ST_LEN_SHORT * 1.5 * KOEFF);
 	private static int ST_LEN_LONG = (int) (ST_LEN_AVER * 1.5 * KOEFF);
-	
 	
 	
 	class Edge {
@@ -51,49 +52,52 @@ public class Stickman {
 		protected int id = OBJ_ID++;
 		public boolean mSelected = false;
 		public boolean mBig = false;
-		protected Point mBasePoint;
-		protected HashSet<Point> mDerivedPoints = new HashSet<Point>();
+		protected String mBasePoint;
+		protected HashSet<String> mDerivedPoints = new HashSet<String>();
 		
 		@Override
 		public int hashCode() {
 			return id; 
 		}
 		
-		@Override
-		public boolean equals(Object o) {
-			return (o.getClass() == Point.class && id == ((Point)o).id); 
+		public void set(Point psource) {
+			x = psource.x;
+			y = psource.y;
+			mSelected = psource.mSelected;
+			mBig = psource.mBig;
 		}
 	} 
 	
-	private HashSet<Point> mPoints = new HashSet<Point>();
-	private ArrayList<Edge> mEdges = new ArrayList<Edge>();
-	private Point mHeadPoint = new Point(ScreenProps.screenWidth/2, 200);;
+	private HashMap<String, Point> mPoints = new HashMap<String, Point>();
 	
-	Point cent = new Point(mHeadPoint.x, mHeadPoint.y);
-	Point head = new Point();
-	Point lhand = new Point();
-	Point rhand = new Point(); 
-	Point pah = new Point();
-	Point lleg = new Point();
-	Point rleg = new Point();
-	Point lbothand = new Point();
-	Point rbothand = new Point();
-	Point lbotleg = new Point();
-	Point rbotleg = new Point();
+	private ArrayList<Edge> mEdges = new ArrayList<Edge>();
+	private Point mCenterPoint = new Point(ScreenProps.screenWidth/2, ScreenProps.screenHeight/3);
+	
+	protected Point cent = new Point(mCenterPoint.x, mCenterPoint.y);
+	protected Point head = new Point();
+	protected Point lhand = new Point();
+	protected Point rhand = new Point(); 
+	protected Point pah = new Point();
+	protected Point lleg = new Point();
+	protected Point rleg = new Point();
+	protected Point lbothand = new Point();
+	protected Point rbothand = new Point();
+	protected Point lbotleg = new Point();
+	protected Point rbotleg = new Point();
 	
 	public Stickman() {
 		
-		mPoints.add(head);
-		mPoints.add(cent);
-		mPoints.add(lhand);
-		mPoints.add(rhand);
-		mPoints.add(lbothand);
-		mPoints.add(rbothand);
-		mPoints.add(pah);
-		mPoints.add(lleg);
-		mPoints.add(rleg);
-		mPoints.add(lbotleg);
-		mPoints.add(rbotleg);
+		mPoints.put("head", head);
+		mPoints.put("cent", cent);
+		mPoints.put("lhand", lhand);
+		mPoints.put("rhand", rhand);
+		mPoints.put("lbothand", lbothand);
+		mPoints.put("rbothand", rbothand);
+		mPoints.put("pah", pah);
+		mPoints.put("lleg", lleg);
+		mPoints.put("rleg", rleg);
+		mPoints.put("lbotleg", lbotleg);
+		mPoints.put("rbotleg", rbotleg);
 		
 		//edges 
 		mEdges.add(new Edge(head, cent, ST_LEN_VERY_SHORT));
@@ -107,16 +111,16 @@ public class Stickman {
 		mEdges.add(new Edge(lleg, lbotleg, ST_LEN_AVER));
 		mEdges.add(new Edge(rleg, rbotleg, ST_LEN_AVER));
 		
-		rleg.mBasePoint = pah;
-		lleg.mBasePoint = pah;
-		pah.mBasePoint = cent;
-		lhand.mBasePoint = cent;
-		rhand.mBasePoint = cent;
-		head.mBasePoint = cent;
-		lbothand.mBasePoint = lhand;
-		rbothand.mBasePoint = rhand;
-		lbotleg.mBasePoint = lleg;
-		rbotleg.mBasePoint = rleg;
+		rleg.mBasePoint = "pah";
+		lleg.mBasePoint = "pah";
+		pah.mBasePoint = "cent";
+		lhand.mBasePoint = "cent";
+		rhand.mBasePoint = "cent";
+		head.mBasePoint = "cent";
+		lbothand.mBasePoint = "lhand";
+		rbothand.mBasePoint = "rhand";
+		lbotleg.mBasePoint = "lleg";
+		rbotleg.mBasePoint = "rleg";
 		
 		setBig(head);
 		
@@ -137,16 +141,16 @@ public class Stickman {
 		return mEdges;
 	}
 	
-	public HashSet<Point> getPoints() {
+	public HashMap<String, Point> getPoints() {
 		return mPoints;
 	}
 	
 	public Point getHead() {
-		return mHeadPoint;
+		return mCenterPoint;
 	}
 	
 	public void selectPoint(Point p) {
-		for (Point ip : getPoints()) {
+		for (Point ip : getPoints().values()) {
 			ip.mSelected = false;
 		}
 		
@@ -154,11 +158,15 @@ public class Stickman {
 	}
 	
 	public void setBig(Point p) {
-		for (Point ip : getPoints()) {
+		for (Point ip : getPoints().values()) {
 			ip.mBig = false;
 		}
 		
 		p.mBig = true;
+	}
+	
+	private Point getPoint(String name) {
+		return getPoints().get(name);
 	}
 	
 	private double getAngle(int x1, int y1, int x2, int y2) {
@@ -179,7 +187,7 @@ public class Stickman {
 		if (p.mBasePoint == null) {
 			return;
 		}
-		double alpha = getAngle(p.mBasePoint.x, p.mBasePoint.y, x, y);
+		double alpha = getAngle(getPoint(p.mBasePoint).x, getPoint(p.mBasePoint).y, x, y);
 		setAngle(p, alpha);
 	}
 	
@@ -206,13 +214,19 @@ public class Stickman {
 	}
 	
 	public void setAngle(Point p, double alpha) { 
-		Edge ed = findEdge(p, p.mBasePoint);
+		Edge ed = findEdge(p, getPoint(p.mBasePoint));
 		if (ed == null) {
 			return;
 		}
 		int len = ed.length;
 		int a = (int) (Math.sin(alpha) * len);
 		int b = (int) (Math.cos(alpha) * len);
-		p.set(p.mBasePoint.x + b, p.mBasePoint.y + a);
+		p.set(getPoint(p.mBasePoint).x + b, getPoint(p.mBasePoint).y + a);
+	}
+	
+	public void set(Stickman another) {
+		for (String pname : another.getPoints().keySet()) {
+			getPoint(pname).set( another.getPoint(pname) );
+		}
 	}
 }
