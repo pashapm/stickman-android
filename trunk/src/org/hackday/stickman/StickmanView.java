@@ -38,7 +38,7 @@ public class StickmanView extends View {
 
     private void init() {
         setMinimumHeight(100);
-        setMinimumWidth(75);
+        setMinimumWidth(100);
     }
 
     @Override
