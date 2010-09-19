@@ -93,11 +93,11 @@ public class Stickman implements Cloneable {
 		mEdges.add(new Edge(head, cent, ST_LEN_VERY_SHORT));
 		mEdges.add(new Edge(cent, lhand, ST_LEN_SHORT));
 		mEdges.add(new Edge(cent, rhand, ST_LEN_SHORT));
-		mEdges.add(new Edge(lhand, lbothand, ST_LEN_SHORT));
-		mEdges.add(new Edge(rhand, rbothand, ST_LEN_SHORT));
+		mEdges.add(new Edge(lhand, lbothand, ST_LEN_SHORT)); 
+		mEdges.add(new Edge(getPoint("rhand"), getPoint("rbothand"), ST_LEN_SHORT));
 		mEdges.add(new Edge(cent, pah, ST_LEN_AVER));
 		mEdges.add(new Edge(pah, lleg, ST_LEN_AVER));
-		mEdges.add(new Edge(pah, rleg, ST_LEN_AVER));
+		mEdges.add(new Edge(pah, rleg, ST_LEN_AVER)); 
 		mEdges.add(new Edge(lleg, lbotleg, ST_LEN_AVER));
 		mEdges.add(new Edge(rleg, rbotleg, ST_LEN_AVER));
 	}
@@ -204,7 +204,7 @@ public class Stickman implements Cloneable {
 		ArrayList<Stickman> interframes = new ArrayList<Stickman>(framenum);
 		
 		for(int i=0; i<framenum; ++i) { //for each frame
-			
+			 
 			HashMap<String, Point> points = new HashMap<String, Point>();
 			
 			for (String pname : st1.getPoints().keySet()) {
