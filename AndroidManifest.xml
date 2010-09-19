@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.hackday.stickman">
+	
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	
 	<application android:icon="@drawable/icon" android:label="Stickman"
 		android:debuggable="true">
 		<activity android:name=".MainActivity">
@@ -13,6 +16,16 @@
 			</intent-filter>
 
 		</activity>
+		
+		<activity android:name=".upload.UploadActivity" android:screenOrientation="portrait"
+			android:label="@string/app_name">
+		</activity>
+
+		<activity android:name=".upload.YoutubeActivity"
+			android:screenOrientation="portrait"></activity>
+		<activity android:name=".upload.FacebookActivity"
+			android:screenOrientation="portrait"></activity>
+
 
 		<service android:name=".processing.ProcessingService"
 			android:process=":remote">
