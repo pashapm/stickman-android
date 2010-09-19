@@ -26,6 +26,7 @@ import java.util.LinkedList;
 
 import org.hackday.stickman.processing.ProcessingService;
 
+
 public class SceneList extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     
 	public static String PROCESSING_FINISHED = "org.hackday.stickman.PROCESSING_FINISHED";
@@ -34,7 +35,7 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
     private Gallery gallery;
     private StickmanView stickmanView;
     private static final int DIALOG_WAIT = 0;
-    private static final int FPS = 25;
+    private static final int FPS = 24;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -107,6 +108,27 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                         for (int i = 0, scenesSize = adapter.scenes.size(); i < scenesSize-1; i++) {
                             Stickman scene1 = adapter.scenes.get(i);
                             Stickman scene2 = adapter.scenes.get(i+1);
+                            
+//                            Stickman newstick0 = new Stickman();
+//    	                    newstick0.set(scene1);
+//                            stickmanView.setmStickman(newstick0);
+//                            Bitmap b0 = stickmanView.makeBitmap(ScreenProps.screenWidth, ScreenProps.screenWidth);
+//                            File currentFrameFile0 = new File(parent, i+".jpg");
+//                            System.out.println("working on:" + currentFrameFile0.getPath());
+//                            BufferedOutputStream os0 = null;
+//                            try {
+//                                os0 = new BufferedOutputStream(new FileOutputStream(currentFrameFile0));
+//                                b0.compress(Bitmap.CompressFormat.JPEG, 100, os0);
+//                            } catch (FileNotFoundException e) {
+//                                e.printStackTrace();
+//                            } finally {
+//                                if (os0 != null) try {
+//                                    os0.close();
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                            
                             ArrayList<Stickman> frames1 = Stickman.getIntermediateFrames(scene1, scene2, FPS);
                             DecimalFormat df = new DecimalFormat("img000.jpg");
                             for (int i1 = 0, framesSize = frames1.size(); i1 < framesSize; i1++) {
@@ -146,11 +168,11 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                     @Override
                     protected void onPostExecute(Object o) {
                         super.onPostExecute(o);
-                        dismissDialog(DIALOG_WAIT);
+                        
                         
                     	Intent i = new Intent(SceneList.this, ProcessingService.class);
                     	final String commands[] = {
-                    	"-f image2 -r 25 -i "+"/sdcard/stickman/img%03d.jpg "+"/sdcard/stickman/video.avi",
+                    	"-f image2 -r 30 -i "+"/sdcard/stickman/img%03d.jpg "+"/sdcard/stickman/video.avi",
                     	"-i "+"/sdcard/stickman/video.avi -i " +"/sdcard/moon.wav" + " -f mp4 "+"/sdcard/stickman/video.mp4"
                     	}; 
                     	i.putExtra("num", 0);
@@ -239,9 +261,17 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case R.id.share:
-	        return true;
+	        return true; 
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		if (intent.getAction().equals(SceneList.PROCESSING_FINISHED)) {
+			dismissDialog(DIALOG_WAIT);
+			startActivity(new Intent(SceneList.this, org.hackday.stickman.upload.UploadActivity.class));
+		} 
 	}
 }
