@@ -10,8 +10,6 @@ public class Stickman implements Cloneable {
     public static final int RELATIVE_WIDTH = (int) (1.0f* RESCALE_MULT);
     public static final int RELATIVE_HEIGHT = (int) (1.0f* RESCALE_MULT);
 
-	protected static int OBJ_ID = 0;
-
 	private static float KOEFF = 1.1f;
 
     private static int ST_LEN_VERY_SHORT = (int) (RESCALE_MULT / 20 * KOEFF);
@@ -20,85 +18,36 @@ public class Stickman implements Cloneable {
     private static int ST_LEN_LONG = (int) (ST_LEN_AVER * 1.5);
 
 
-	class Edge {
-		public Point mStart;
-		public Point mEnd;
-		public int length;
-
-		public Edge(Point start, Point end, int length) {
-			mStart = start;
-			mEnd = end;
-			this.length = length;
-		}
-
-		public double getLength() {
-			return Math.hypot(mStart.x - mEnd.x, mStart.y - mEnd.y);
-		}
-	}
-
-	class Point extends android.graphics.Point {
-
-		Point(int x, int y) {
-			super(x, y);
-		}
-
-		Point() {
-		}
-
-		@Override
-		public String toString() {
-			return "Point["+x+","+y+"]";
-		}
-
-		protected int id = OBJ_ID++;
-		public boolean mSelected = false;
-		public boolean mBig = false;
-		protected String mBasePoint;
-		protected HashSet<String> mDerivedPoints = new HashSet<String>();
-
-		@Override
-		public int hashCode() {
-			return id;
-		}
-
-		public void set(Point psource) {
-			x = psource.x;
-			y = psource.y;
-			mSelected = psource.mSelected;
-			mBig = psource.mBig;
-		}
-	}
-
 	private HashMap<String, Point> mPoints = new HashMap<String, Point>();
 
 	private ArrayList<Edge> mEdges = new ArrayList<Edge>();
-    private Point mCenterPoint = new Point(RELATIVE_WIDTH / 2, RELATIVE_HEIGHT / 3);
+    private Point mCenterPoint = new Point(RELATIVE_WIDTH / 2, RELATIVE_HEIGHT / 3, "centerPoint");
 
-	protected Point cent = new Point(mCenterPoint.x, mCenterPoint.y);
-	protected Point head = new Point();
-	protected Point lhand = new Point();
-	protected Point rhand = new Point();
-	protected Point pah = new Point();
-	protected Point lleg = new Point();
-	protected Point rleg = new Point();
-	protected Point lbothand = new Point();
-	protected Point rbothand = new Point();
-	protected Point lbotleg = new Point();
-	protected Point rbotleg = new Point();
+	protected Point cent = new Point(mCenterPoint.x, mCenterPoint.y, "cent");
+	protected Point head = new Point("head");
+	protected Point lhand = new Point("lhand");
+	protected Point rhand = new Point("rhand");
+	protected Point pah = new Point("pah");
+	protected Point lleg = new Point("lleg");
+	protected Point rleg = new Point("rleg");
+	protected Point lbothand = new Point("lbothand");
+	protected Point rbothand = new Point("rbothand");
+	protected Point lbotleg = new Point("lbotleg");
+	protected Point rbotleg = new Point("rbotleg");
 
 	public Stickman() {
 
-		mPoints.put("head", head);
-		mPoints.put("cent", cent);
-		mPoints.put("lhand", lhand);
-		mPoints.put("rhand", rhand);
-		mPoints.put("lbothand", lbothand);
-		mPoints.put("rbothand", rbothand);
-		mPoints.put("pah", pah);
-		mPoints.put("lleg", lleg);
-		mPoints.put("rleg", rleg);
-		mPoints.put("lbotleg", lbotleg);
-		mPoints.put("rbotleg", rbotleg);
+		mPoints.put(head.mName, head);
+		mPoints.put(cent.mName, cent);
+		mPoints.put(lhand.mName, lhand);
+		mPoints.put(rhand.mName, rhand);
+		mPoints.put(lbothand.mName, lbothand);
+		mPoints.put(rbothand.mName, rbothand);
+		mPoints.put(pah.mName, pah);
+		mPoints.put(lleg.mName, lleg);
+		mPoints.put(rleg.mName, rleg);
+		mPoints.put(lbotleg.mName, lbotleg);
+		mPoints.put(rbotleg.mName, rbotleg);
 
 		//edges
 		mEdges.add(new Edge(head, cent, ST_LEN_VERY_SHORT));
@@ -144,6 +93,10 @@ public class Stickman implements Cloneable {
 
 	public HashMap<String, Point> getPoints() {
 		return mPoints;
+	}
+	
+	public void setPoints(HashMap<String, Point> points) {
+		mPoints = points;
 	}
 
 	public Point getHead() {
@@ -229,5 +182,92 @@ public class Stickman implements Cloneable {
 		for (String pname : another.getPoints().keySet()) {
 			getPoint(pname).set( another.getPoint(pname) );
 		}
+	}
+	
+	public static ArrayList<Stickman> getIntermediateFrames(Stickman st1, Stickman st2, int framenum) {
+		
+		ArrayList<Stickman> interframes = new ArrayList<Stickman>(framenum);
+		
+		for(int i=0; i<framenum; ++i) { //for each frame
+			
+			HashMap<String, Point> points = new HashMap<String, Point>();
+			
+			for (String pname : st1.getPoints().keySet()) {
+				Point st1p = st1.getPoint(pname);
+				Point st2p = st2.getPoint(pname);
+				
+				int xdiff = st2p.x - st1p.x;
+				int ydiff = st2p.y - st1p.y;
+				
+				int xquant = xdiff / framenum; 
+				int yquant = ydiff / framenum; 
+				
+				Point newp = new Point(pname);
+				newp.set(st1p);
+				newp.set(newp.x + i*xquant, newp.y + i*yquant);
+				points.put(pname, newp);
+			}
+			
+			Stickman st = new Stickman();
+			st.setPoints(points);
+			interframes.add(st);
+		}
+		
+		return interframes;
+	}
+}
+
+class Edge {
+	public Point mStart;
+	public Point mEnd;
+	public int length;
+
+	public Edge(Point start, Point end, int length) {
+		mStart = start;
+		mEnd = end;
+		this.length = length;
+	}
+
+	public double getLength() {
+		return Math.hypot(mStart.x - mEnd.x, mStart.y - mEnd.y);
+	}
+}
+
+class Point extends android.graphics.Point {
+
+	protected static int OBJ_ID = 0;
+	
+	Point(int x, int y, String name) {
+		super(x, y);
+		mName = name;
+	}
+
+	Point(String name) {
+		mName = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Point["+x+","+y+"]";
+	}
+
+	public String mName;
+	
+	protected int id = OBJ_ID++;
+	public boolean mSelected = false;
+	public boolean mBig = false;
+	protected String mBasePoint;
+	protected HashSet<String> mDerivedPoints = new HashSet<String>();
+
+	@Override
+	public int hashCode() {
+		return id;
+	}
+
+	public void set(Point psource) {
+		x = psource.x;
+		y = psource.y;
+		mSelected = psource.mSelected;
+		mBig = psource.mBig;
 	}
 }

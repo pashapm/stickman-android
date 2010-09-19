@@ -7,8 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Gallery;
 
-import org.hackday.stickman.Stickman.Edge;
-import org.hackday.stickman.Stickman.Point;
 
 public class StickmanView extends View {
 

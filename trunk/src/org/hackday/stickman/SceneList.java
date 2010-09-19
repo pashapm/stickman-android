@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class SceneList extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -56,8 +57,12 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                 }
                 break;
             case R.id.play:
-
-                break;
+            	ArrayList<Stickman> frames = Stickman.getIntermediateFrames(adapter.scenes.get(0), adapter.scenes.get(1), 10);
+                for (Stickman s : frames) {
+                	adapter.add(s);
+                }
+                adapter.notifyDataSetChanged();
+            	break;
             case R.id.reset:
 
                 break;
