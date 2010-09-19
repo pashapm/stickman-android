@@ -80,9 +80,9 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                 }
                 break;
             case R.id.play:
-            	ArrayList<Stickman> frames = Stickman.getIntermediateFrames(adapter.scenes.get(0), adapter.scenes.get(1), 10);
+            	ArrayList<Stickman> frames0 = Stickman.getIntermediateFrames(adapter.scenes.get(0), adapter.scenes.get(1), 10);
             	Stickman rm = adapter.scenes.removeLast();
-            	for (Stickman s : frames) {
+            	for (Stickman s : frames0) {
                 	adapter.add(s);
                 }
             	adapter.add(rm);
@@ -96,17 +96,19 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                             Stickman scene1 = adapter.scenes.get(i);
                             Stickman scene2 = adapter.scenes.get(i+1);
                             int framenum = 10;
-                            ArrayList<Stickman> frames = Stickman.getIntermediateFrames(scene1, scene2, framenum);
+                            ArrayList<Stickman> frames1 = Stickman.getIntermediateFrames(scene1, scene2, framenum);
                             File parent = new File("/sdcard/stickman/");
                             parent.mkdir();
                             for (File file : parent.listFiles()) {
                                 file.delete();
                             }
                             DecimalFormat df = new DecimalFormat("img000.png");
-                            for (int i1 = 0, framesSize = frames.size(); i1 < framesSize; i1++) {
-                                Stickman frame = frames.get(i1);
+                            for (int i1 = 0, framesSize = frames1.size(); i1 < framesSize; i1++) {
+                                Stickman frame = frames1.get(i1);
+                                Stickman newstick = new Stickman();
+        	                    newstick.set(frame);
                                 StickmanView stickmanView = new StickmanView(SceneList.this);
-                                stickmanView.setmStickman(frame);
+                                stickmanView.setmStickman(newstick);
                                 Bitmap b = stickmanView.makeBitmap(ScreenProps.screenWidth, ScreenProps.screenWidth);
                                 File currentFrameFile = new File(parent, df.format(i * framenum + i1));
                                 System.out.println("working on:" + currentFrameFile.getPath());
