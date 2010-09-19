@@ -40,6 +40,8 @@ public class StickmanView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        boolean isRender = false;
+        if (getMeasuredWidth() == 0) isRender = true;
         float scaleFactor = getScaleFactor(canvas);
         canvas.scale(scaleFactor, scaleFactor);
 
@@ -51,7 +53,11 @@ public class StickmanView extends View {
         }
 
         for (Point p : mStickman.getPoints().values()) {
-            mPaint.setColor(p.mSelected ? Color.RED : Color.BLACK);
+            if (isRender) {
+                mPaint.setColor(p.mSelected ? Color.RED : Color.BLACK);
+            } else {
+                mPaint.setColor(Color.BLACK);
+            }
             canvas.drawCircle(p.x, p.y, p.mBig ? Stickman.RESCALE_MULT / 30 : Stickman.RESCALE_MULT / 60, mPaint);
         }
         mPaint.setColor(Color.BLACK);
