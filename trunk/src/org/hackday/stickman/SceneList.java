@@ -150,12 +150,13 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                         
                     	Intent i = new Intent(SceneList.this, ProcessingService.class);
                     	final String commands[] = {
-                    	"-f image2 -r 5 -i "+"/sdcard/stickman/img%03d.jpg "+"/sdcard/stickman/video.avi" 
+                    	"-f image2 -r 25 -i "+"/sdcard/stickman/img%03d.jpg "+"/sdcard/stickman/video.avi",
+                    	"-i "+"/sdcard/stickman/video.avi -i " +"/sdcard/moon.wav" + " -f mp4 "+"/sdcard/stickman/video.mp4"
                     	}; 
                     	i.putExtra("num", 0);
                     	i.putExtra("commands", commands);
                     	startService(i);
-                    }
+                    } 
                 }.execute();
                 break;
         }

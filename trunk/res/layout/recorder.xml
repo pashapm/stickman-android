@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:background="#80000000" android:id="@+id/rec_layout" android:layout_height="fill_parent">
+
+<LinearLayout android:id="@+id/LinearLayout03" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1"></LinearLayout>
+
+
+
+
+
+<LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:background="#777777" android:padding="5dip" android:id="@+id/rec_widget"><TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Record your audio" android:textSize="17sp" android:textColor="#ffffff"></TextView><SeekBar android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/audioseek" android:max="8" android:clickable="false"></SeekBar><LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="rec" android:id="@+id/recaudio"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="stop" android:id="@+id/stopaudio"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="play" android:id="@+id/playaudio"></Button>
+<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent"></LinearLayout>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="use" android:id="@+id/useaudio"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="exit" android:id="@+id/exitaudio"></Button>
+</LinearLayout></LinearLayout>
+</LinearLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:scrollbarAlwaysDrawHorizontalTrack="false" android:scrollbarAlwaysDrawVerticalTrack="false" android:layout_gravity="top|center" android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:padding="5.0dip" android:layout_width="270.0dip" android:layout_height="wrap_content">
+        <ImageView android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" android:src="@drawable/youtube" />
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="Username" />
+            <EditText android:textSize="15.0dip" android:id="@+id/yt_username" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textEmailAddress" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="Password" />
+            <EditText android:textSize="15.0dip" android:id="@+id/yt_password" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textPassword" />
+        </LinearLayout>
+        <TextView android:layout_gravity="left" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="Title" />
+        <EditText android:id="@+id/yt_title" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        
+        <TextView android:layout_gravity="left" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="Description" />
+        <EditText android:gravity="top" android:id="@+id/yt_description" android:layout_width="fill_parent" android:layout_height="wrap_content" android:lines="2" />
+        
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	        <Button android:layout_gravity="bottom" android:id="@+id/yt_upload" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/upload_btn" />
+	        <Button android:layout_gravity="bottom" android:id="@+id/yt_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/close_btn" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
