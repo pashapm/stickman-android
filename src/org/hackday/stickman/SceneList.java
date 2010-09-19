@@ -3,6 +3,7 @@ package org.hackday.stickman;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -23,8 +24,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import org.hackday.stickman.processing.ProcessingService;
+
 public class SceneList extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-    private SceneAdapter adapter;
+    
+	public static String PROCESSING_FINISHED = "org.hackday.stickman.PROCESSING_FINISHED";
+	
+	private SceneAdapter adapter;
     private Gallery gallery;
     private StickmanView stickmanView;
     private static final int DIALOG_WAIT = 0;
@@ -102,7 +108,7 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                             for (File file : parent.listFiles()) {
                                 file.delete();
                             }
-                            DecimalFormat df = new DecimalFormat("img000.png");
+                            DecimalFormat df = new DecimalFormat("img000.jpg");
                             for (int i1 = 0, framesSize = frames1.size(); i1 < framesSize; i1++) {
                                 Stickman frame = frames1.get(i1);
                                 Stickman newstick = new Stickman();
@@ -115,7 +121,7 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                                 BufferedOutputStream os = null;
                                 try {
                                     os = new BufferedOutputStream(new FileOutputStream(currentFrameFile));
-                                    b.compress(Bitmap.CompressFormat.PNG, 100, os);
+                                    b.compress(Bitmap.CompressFormat.JPEG, 100, os);
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 } finally {
@@ -141,12 +147,20 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                     protected void onPostExecute(Object o) {
                         super.onPostExecute(o);
                         dismissDialog(DIALOG_WAIT);
+                        
+                    	Intent i = new Intent(SceneList.this, ProcessingService.class);
+                    	final String commands[] = {
+                    	"-f image2 -r 5 -i "+"/sdcard/stickman/img%03d.jpg "+"/sdcard/stickman/video.avi" 
+                    	}; 
+                    	i.putExtra("num", 0);
+                    	i.putExtra("commands", commands);
+                    	startService(i);
                     }
                 }.execute();
                 break;
         }
     }
-
+ 
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         Stickman s = adapter.scenes.get(i);
         stickmanView.setmStickman(s);

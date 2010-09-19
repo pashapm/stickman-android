@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.hackday.stickman">
-    <application android:icon="@drawable/icon" android:label="Stickman" android:debuggable="true">
-        <activity android:name=".MainActivity">
-        </activity>
-        <activity android:name=".LandscapeEditActivity"/>
-        <activity android:name=".SceneList">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+	package="org.hackday.stickman">
+	<application android:icon="@drawable/icon" android:label="Stickman"
+		android:debuggable="true">
+		<activity android:name=".MainActivity">
+		</activity>
+		<activity android:name=".LandscapeEditActivity" />
+		<activity android:name=".SceneList">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
 
-        </activity>
-    </application>
-</manifest>
+		</activity>
+
+		<service android:name=".processing.ProcessingService"
+			android:process=":remote">
+		</service>
+
+		<service android:name=".processing.ProcessingService1"
+			android:process=":remote1">
+		</service>
+
+		<service android:name=".processing.ProcessingService2"
+			android:process=":remote2">
+		</service>
+	</application> 
+</manifest> 
