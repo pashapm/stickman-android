@@ -99,6 +99,7 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         	Stickman newstick = new Stickman();
         	newstick.set(stickman);
             scenes.add(newstick);
+            gallery.setSelection(scenes.size());
         }
 
 //        public void add(int index, Stickman stickman) {
