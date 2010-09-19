@@ -34,13 +34,15 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         findViewById(R.id.add).setOnClickListener(this);
         findViewById(R.id.remove).setOnClickListener(this);
 
+        findViewById(R.id.play).setOnClickListener(this);
+        findViewById(R.id.reset).setOnClickListener(this);
+
     }
 
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.add:
-            	
                 adapter.add(adapter.scenes.get(gallery.getSelectedItemPosition()));
                 adapter.notifyDataSetChanged();
                 break;
@@ -52,6 +54,12 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                     Toast.makeText(this, "cannot remove last", Toast.LENGTH_SHORT).show();
 
                 }
+                break;
+            case R.id.play:
+
+                break;
+            case R.id.reset:
+
                 break;
         }
     }
@@ -108,14 +116,14 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         public long getItemId(int i) {
             return 0;
         }
-  
+
         public View getView(int i, View view, ViewGroup viewGroup) {
-            Gallery.LayoutParams lp = new Gallery.LayoutParams(75, 100);
+            Gallery.LayoutParams lp = new Gallery.LayoutParams(100, 100);
             StickmanView stickmanView = new StickmanView(SceneList.this);
             stickmanView.setClickable(false);
             stickmanView.setLayoutParams(lp);
-            stickmanView.setmStickman(scenes.get(i)); 
-            return stickmanView; 
+            stickmanView.setmStickman(scenes.get(i));
+            return stickmanView;
         }
     }
 }

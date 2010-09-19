@@ -28,4 +28,17 @@
              android:layout_width="fill_parent"
              android:spacing="1dp"
              android:background="#f00"/>
+    <LinearLayout android:layout_height="wrap_content"
+                  android:layout_width="fill_parent">
+        <Button android:id="@+id/play"
+                android:text="play"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+        <Button android:id="@+id/reset"
+                android:text="reset"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+    </LinearLayout>
 </LinearLayout>
