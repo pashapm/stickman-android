@@ -58,9 +58,11 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                 break;
             case R.id.play:
             	ArrayList<Stickman> frames = Stickman.getIntermediateFrames(adapter.scenes.get(0), adapter.scenes.get(1), 10);
-                for (Stickman s : frames) {
+            	Stickman rm = adapter.scenes.removeLast();
+            	for (Stickman s : frames) {
                 	adapter.add(s);
                 }
+            	adapter.add(rm);
                 adapter.notifyDataSetChanged();
             	break;
             case R.id.reset:
@@ -107,9 +109,11 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
             gallery.setSelection(scenes.size());
         }
 
-//        public void add(int index, Stickman stickman) {
-//            scenes.add(index, stickman);
-//        }
+        public void add(int index, Stickman stickman) {
+        	Stickman newstick = new Stickman();
+        	newstick.set(stickman);
+            scenes.add(index, stickman);
+        }
 
         public int getCount() {
             return scenes.size();
