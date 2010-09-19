@@ -101,9 +101,9 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
             scenes.add(newstick);
         }
 
-        public void add(int index, Stickman stickman) {
-            scenes.add(index, stickman);
-        }
+//        public void add(int index, Stickman stickman) {
+//            scenes.add(index, stickman);
+//        }
 
         public int getCount() {
             return scenes.size();

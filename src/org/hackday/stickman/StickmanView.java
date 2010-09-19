@@ -1,6 +1,7 @@
 package org.hackday.stickman;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -44,7 +45,7 @@ public class StickmanView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float scaleFactor = getScaleFactor();
+        float scaleFactor = getScaleFactor(canvas);
         canvas.scale(scaleFactor, scaleFactor);
 
         canvas.drawColor(Color.WHITE);
@@ -63,6 +64,10 @@ public class StickmanView extends View {
 
     private float getScaleFactor() {
         return 1.0f * getMeasuredHeight() / Stickman.RELATIVE_HEIGHT;
+    }
+
+    private float getScaleFactor(Canvas canvas) {
+        return 1.0f * canvas.getHeight() / Stickman.RELATIVE_HEIGHT;
     }
 
     private Point findNearestPoint(int x, int y) {
@@ -127,4 +132,12 @@ public class StickmanView extends View {
     public void setmStickman(Stickman mStickman) {
         this.mStickman = mStickman;
     }
+
+    public Bitmap makeBitmap(int w, int h) {
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        this.draw(canvas);
+        return bitmap;
+    }
+
 }
