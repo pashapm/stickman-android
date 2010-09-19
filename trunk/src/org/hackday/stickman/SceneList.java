@@ -1,6 +1,11 @@
 package org.hackday.stickman;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +18,8 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.Toast;
 
+import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -20,6 +27,19 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
     private SceneAdapter adapter;
     private Gallery gallery;
     private StickmanView stickmanView;
+    private static final int DIALOG_WAIT = 0;
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DIALOG_WAIT:
+                ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage("work in progress...");
+                return dialog;
+            default:
+                return super.onCreateDialog(id);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +59,7 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
         findViewById(R.id.remove).setOnClickListener(this);
 
         findViewById(R.id.play).setOnClickListener(this);
-        findViewById(R.id.reset).setOnClickListener(this);
+        findViewById(R.id.export).setOnClickListener(this);
 
     }
 
@@ -68,8 +88,56 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
             	adapter.add(rm);
                 adapter.notifyDataSetChanged();
             	break;
-            case R.id.reset:
+            case R.id.export:
+                new AsyncTask<Object, Object, Object>(){
+                    @Override
+                    protected Object doInBackground(Object... objects) {
+                        for (int i = 0, scenesSize = adapter.scenes.size(); i < scenesSize-1; i++) {
+                            Stickman scene1 = adapter.scenes.get(i);
+                            Stickman scene2 = adapter.scenes.get(i+1);
+                            int framenum = 10;
+                            ArrayList<Stickman> frames = Stickman.getIntermediateFrames(scene1, scene2, framenum);
+                            File parent = new File("/sdcard/stickman/");
+                            parent.mkdir();
+                            DecimalFormat df = new DecimalFormat("img000.png");
+                            for (int i1 = 0, framesSize = frames.size(); i1 < framesSize; i1++) {
+                                Stickman frame = frames.get(i1);
+                                StickmanView stickmanView = new StickmanView(SceneList.this);
+                                stickmanView.setmStickman(frame);
+                                Bitmap b = stickmanView.makeBitmap(100, 100);
+                                File currentFrameFile = new File(parent, df.format(i * framenum + i1));
+                                System.out.println("working on:" + currentFrameFile.getPath());
+                                BufferedOutputStream os = null;
+                                try {
+                                    os = new BufferedOutputStream(new FileOutputStream(currentFrameFile));
+                                    b.compress(Bitmap.CompressFormat.PNG, 100, os);
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    if (os != null) try {
+                                        os.close();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
 
+                            }
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        showDialog(DIALOG_WAIT);
+                    }
+
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        super.onPostExecute(o);
+                        dismissDialog(DIALOG_WAIT);
+                    }
+                }.execute();
                 break;
         }
     }
@@ -146,7 +214,7 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
 		inflater.inflate(R.menu.menu, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
