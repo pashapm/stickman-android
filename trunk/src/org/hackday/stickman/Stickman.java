@@ -213,13 +213,13 @@ public class Stickman implements Cloneable {
 				
 				int xdiff = st2p.x - st1p.x;
 				int ydiff = st2p.y - st1p.y;
-				
+				  
 				int xquant = xdiff / framenum; 
-				int yquant = ydiff / framenum; 
+				int yquant = ydiff / framenum;  
 				
-				Point newp = new Point(pname);
+				Point newp = new Point(pname); 
 				newp.set(st1p);
-				newp.set(newp.x + i*xquant, newp.y + i*yquant);
+				newp.set(newp.x + (i+1)*xquant, newp.y + (i+1)*yquant);
 				points.put(pname, newp);
 			} 
 			
@@ -228,6 +228,10 @@ public class Stickman implements Cloneable {
 			st.reinitializeEdges();
 			interframes.add(st);
 		}
+		
+		Stickman end = new Stickman();
+		end.set(st2); 
+		interframes.add(end);
 		
 		return interframes;
 	}

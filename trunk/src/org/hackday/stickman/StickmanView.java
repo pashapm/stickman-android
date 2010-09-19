@@ -53,7 +53,7 @@ public class StickmanView extends View {
         }
 
         for (Point p : mStickman.getPoints().values()) {
-            if (isRender) {
+            if (!isRender) {
                 mPaint.setColor(p.mSelected ? Color.RED : Color.BLACK);
             } else {
                 mPaint.setColor(Color.BLACK);
