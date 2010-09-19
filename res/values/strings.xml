@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, MainActivity!</string>
-    <string name="app_name">Stickman</string>
-</resources>
+    
+    
+<string name="fb_user_title">You are:</string>
+<string name="app_name">Fireman Ed</string>
+<string name="upload_btn">Upload</string>
+<string name="close_btn">Close</string>
+</resources>  

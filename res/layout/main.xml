@@ -4,9 +4,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
+	
+	
+	
+<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1"><VideoView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="50dip" android:id="@+id/video_play"></VideoView>
+</LinearLayout><LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent"><Button android:id="@+id/email" android:layout_height="wrap_content" android:text="Send by email" android:layout_width="fill_parent"/><Button android:id="@+id/facebook" android:layout_height="wrap_content" android:text="Post to Facebook" android:layout_width="fill_parent"/><Button android:id="@+id/youtube" android:layout_height="wrap_content" android:text="Post to YouTube" android:layout_width="fill_parent"/></LinearLayout>
+
 </LinearLayout>

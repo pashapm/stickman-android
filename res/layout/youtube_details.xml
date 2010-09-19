@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dip" >
+
+	<TextView 
+		android:id="@+id/LoginCaption"
+		android:text="Login" 
+		android:paddingRight="10dip"	
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		/>
+	<EditText
+		android:id="@+id/LoginInput"
+		android:text="" android:inputType="textEmailAddress"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		/>
+	<TextView 
+		android:id="@+id/PasswordCaption"
+		android:text="Password" 
+		android:paddingRight="10dip"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		/>
+	<EditText
+		android:id="@+id/PasswordInput"
+		android:text=""
+		android:inputType="textPassword"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		/>
+		
+	<TextView 
+		android:id="@+id/VideoTitleCaption"
+		android:text="Video title" 
+		android:paddingRight="10dip"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		/>
+		
+	<EditText
+		android:id="@+id/VideoTitleInput"
+		android:text=""
+		android:inputType="text"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		/>	
+		
+	<ProgressBar android:id="@+id/uploadProgressBar"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"         
+        />		
+	<Button
+		android:id="@+id/RunButton"
+		android:text="Upload"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:layout_marginTop="15dip"/>
+	<TextView  
+	    android:id="@+id/TestView"	
+	    android:text=""
+	    android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+    android:layout_marginTop="15dip"/>
+</LinearLayout>
