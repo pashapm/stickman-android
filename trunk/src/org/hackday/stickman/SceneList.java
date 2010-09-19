@@ -99,12 +99,15 @@ public class SceneList extends Activity implements View.OnClickListener, Adapter
                             ArrayList<Stickman> frames = Stickman.getIntermediateFrames(scene1, scene2, framenum);
                             File parent = new File("/sdcard/stickman/");
                             parent.mkdir();
+                            for (File file : parent.listFiles()) {
+                                file.delete();
+                            }
                             DecimalFormat df = new DecimalFormat("img000.png");
                             for (int i1 = 0, framesSize = frames.size(); i1 < framesSize; i1++) {
                                 Stickman frame = frames.get(i1);
                                 StickmanView stickmanView = new StickmanView(SceneList.this);
                                 stickmanView.setmStickman(frame);
-                                Bitmap b = stickmanView.makeBitmap(100, 100);
+                                Bitmap b = stickmanView.makeBitmap(ScreenProps.screenWidth, ScreenProps.screenWidth);
                                 File currentFrameFile = new File(parent, df.format(i * framenum + i1));
                                 System.out.println("working on:" + currentFrameFile.getPath());
                                 BufferedOutputStream os = null;
