@@ -50,16 +50,17 @@ public class Stickman implements Cloneable {
 		mPoints.put(rbotleg.mName, rbotleg);
 
 		//edges
-		mEdges.add(new Edge(head, cent, ST_LEN_VERY_SHORT));
-		mEdges.add(new Edge(cent, lhand, ST_LEN_SHORT));
-		mEdges.add(new Edge(cent, rhand, ST_LEN_SHORT));
-		mEdges.add(new Edge(lhand, lbothand, ST_LEN_SHORT));
-		mEdges.add(new Edge(rhand, rbothand, ST_LEN_SHORT));
-		mEdges.add(new Edge(cent, pah, ST_LEN_AVER));
-		mEdges.add(new Edge(pah, lleg, ST_LEN_AVER));
-		mEdges.add(new Edge(pah, rleg, ST_LEN_AVER));
-		mEdges.add(new Edge(lleg, lbotleg, ST_LEN_AVER));
-		mEdges.add(new Edge(rleg, rbotleg, ST_LEN_AVER));
+		reinitializeEdges();
+//		mEdges.add(new Edge(head, cent, ST_LEN_VERY_SHORT));
+//		mEdges.add(new Edge(cent, lhand, ST_LEN_SHORT));
+//		mEdges.add(new Edge(cent, rhand, ST_LEN_SHORT));
+//		mEdges.add(new Edge(lhand, lbothand, ST_LEN_SHORT));
+//		mEdges.add(new Edge(rhand, rbothand, ST_LEN_SHORT));
+//		mEdges.add(new Edge(cent, pah, ST_LEN_AVER));
+//		mEdges.add(new Edge(pah, lleg, ST_LEN_AVER));
+//		mEdges.add(new Edge(pah, rleg, ST_LEN_AVER));
+//		mEdges.add(new Edge(lleg, lbotleg, ST_LEN_AVER));
+//		mEdges.add(new Edge(rleg, rbotleg, ST_LEN_AVER));
 
 		rleg.mBasePoint = "pah";
 		lleg.mBasePoint = "pah";
@@ -85,6 +86,20 @@ public class Stickman implements Cloneable {
 		setAngle(rbothand, Math.PI*3/4);
 		setAngle(lbotleg, Math.PI*1/4);
 		setAngle(rbotleg, Math.PI*3/4);
+	}
+	
+	private void reinitializeEdges() {
+		mEdges = new ArrayList<Edge>();
+		mEdges.add(new Edge(head, cent, ST_LEN_VERY_SHORT));
+		mEdges.add(new Edge(cent, lhand, ST_LEN_SHORT));
+		mEdges.add(new Edge(cent, rhand, ST_LEN_SHORT));
+		mEdges.add(new Edge(lhand, lbothand, ST_LEN_SHORT));
+		mEdges.add(new Edge(rhand, rbothand, ST_LEN_SHORT));
+		mEdges.add(new Edge(cent, pah, ST_LEN_AVER));
+		mEdges.add(new Edge(pah, lleg, ST_LEN_AVER));
+		mEdges.add(new Edge(pah, rleg, ST_LEN_AVER));
+		mEdges.add(new Edge(lleg, lbotleg, ST_LEN_AVER));
+		mEdges.add(new Edge(rleg, rbotleg, ST_LEN_AVER));
 	}
 
 	public ArrayList<Edge> getEdges() {
@@ -206,10 +221,11 @@ public class Stickman implements Cloneable {
 				newp.set(st1p);
 				newp.set(newp.x + i*xquant, newp.y + i*yquant);
 				points.put(pname, newp);
-			}
+			} 
 			
 			Stickman st = new Stickman();
 			st.setPoints(points);
+			st.reinitializeEdges();
 			interframes.add(st);
 		}
 		
